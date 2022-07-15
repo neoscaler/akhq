@@ -1,5 +1,7 @@
 package org.akhq.utils;
 
+import org.apache.avro.LogicalType;
+import org.apache.avro.Schema;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 
@@ -10,6 +12,10 @@ import java.time.ZoneId;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class AvroSerializerTest {
+
+    private static Schema fieldsToSchema(String s) {
+        return new Schema.Parser().parse("{\"name\": \"root\", \"type\":\"record\", \"fields\": [" + s + "]}");
+    }
 
     @Nested
     static class ParseDateTime {
@@ -121,6 +127,22 @@ class AvroSerializerTest {
             void testParseDateTime_minutes_local() {
                 assertEquals(AvroSerializer.parseDateTime("2021-07-16T21:30"),
                         LocalDateTime.parse("2021-07-16T21:30").atZone(ZoneId.systemDefault()).toInstant());
+            }
+
+        }
+
+        @Nested
+        static class Decimal {
+
+            @Test
+            void testParseDecimal_without_precision() {
+
+                String fieldName = "test";
+                String type = "int";
+                Schema schema = fieldsToSchema("{\"name\": \"" + fieldName + "\", \"type\": " + type + "}");
+
+                assertEquals(AvroSerializer.decimalSerializer("100", schema, Schema.Type.FIXED, new LogicalType("Decimal")),
+                        "TODO");
             }
 
         }

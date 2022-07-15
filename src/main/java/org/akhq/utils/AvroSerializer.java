@@ -350,7 +350,7 @@ public class AvroSerializer {
     }
 
     @SuppressWarnings("UnpredictableBigDecimalConstructorCall")
-    private static Object decimalSerializer(Object data, Schema schema, Schema.Type primitiveType, LogicalType logicalType) {
+    protected static Object decimalSerializer(Object data, Schema schema, Schema.Type primitiveType, LogicalType logicalType) {
         int scale = ((LogicalTypes.Decimal) schema.getLogicalType()).getScale();
         int precision = ((LogicalTypes.Decimal) schema.getLogicalType()).getPrecision();
         double multiply = Math.pow(10D, precision - scale * 1D);
