@@ -9,6 +9,8 @@ import org.apache.avro.generic.GenericData;
 import org.apache.avro.generic.GenericRecord;
 import org.apache.avro.util.Utf8;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.math.RoundingMode;
@@ -27,6 +29,7 @@ import java.util.TimeZone;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+@Slf4j
 public class AvroSerializer {
     private static final String DECIMAL = "decimal";
     private static final String UUID = "uuid";
@@ -372,6 +375,8 @@ public class AvroSerializer {
         }
 
         value = value.setScale(scale, RoundingMode.HALF_EVEN);
+
+        log.debug("Value is {}", value.toString());
 
         switch (primitiveType) {
             case BYTES:
